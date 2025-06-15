@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/presentation/providers/theme_provider.dart';
 import 'package:social_media_app/presentation/providers/user_provider.dart';
-import 'package:social_media_app/presentation/views/feed_screen.dart';
+import 'package:social_media_app/presentation/views/feed/feed_screen.dart';
+import 'package:social_media_app/presentation/views/login/login_screen.dart';
 
-void main() {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
 
   runApp(
     Builder(
@@ -42,11 +45,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Social Media App',
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        //'/': (context) => const InitialScreen(),
-        //'/login': (context) => const LoginScreen(),
-        '/': (context) => const FeedScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/feed': (context) => const FeedScreen(),
       },
     );
   }

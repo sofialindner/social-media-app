@@ -20,7 +20,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   // Atualiza e salva o usuário no SharedPreferences
-  Future<void> updateUser(User newUser) async {
+  Future<void> setUser(User newUser) async {
     _user = newUser;
     await SharedPreferencesHelper.setUserData(newUser);
     notifyListeners();

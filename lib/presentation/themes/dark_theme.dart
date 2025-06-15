@@ -17,7 +17,7 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.w600,
       color: Colors.white,
     ),
-    backgroundColor: Colors.transparent,
+    backgroundColor: Color(0xFF1A1B1D),
     foregroundColor: Colors.white,
     surfaceTintColor: Colors.transparent,
   ),

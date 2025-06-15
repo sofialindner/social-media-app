@@ -5,7 +5,6 @@ import 'package:social_media_app/data/models/user_model.dart';
 class SharedPreferencesHelper {
   static const String _authKey = 'isAuthenticated';
   static const String _userKey = 'user';
-  static const String _tokenKey = 'token';
 
   static Future<bool> isAuthenticated() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -36,16 +35,6 @@ class SharedPreferencesHelper {
     } else {
       return null;
     }
-  }
-
-  static Future<void> setToken(String token) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_tokenKey, token);
-  }
-
-  static Future<String?> getToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
   }
 
   static Future<void> clearPreferences() async {
