@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/presentation/themes/colors.dart';
 
 class PageIndicator extends StatefulWidget {
   final List<Image> images;
@@ -71,7 +70,9 @@ class AnimatedDot extends StatelessWidget {
       height: 6,
       width: isActive ? 12 : 6,
       decoration: BoxDecoration(
-        color: isActive ? AppColors.primaryColor : Colors.grey.withOpacity(0.5),
+        color: isActive
+            ? Theme.of(context).colorScheme.primary
+            : Colors.grey.withAlpha(60),
         borderRadius: BorderRadius.circular(32),
       ),
     );

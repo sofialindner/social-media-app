@@ -3,8 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/presentation/providers/theme_provider.dart';
 import 'package:social_media_app/presentation/providers/user_provider.dart';
-import 'package:social_media_app/presentation/views/feed/feed_screen.dart';
 import 'package:social_media_app/presentation/views/login/login_screen.dart';
+import 'package:social_media_app/presentation/views/main_scaffold/main_scaffold.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginScreen(),
-        '/feed': (context) => const FeedScreen(),
+        '/home': (context) => const MainScaffold(),
       },
     );
   }

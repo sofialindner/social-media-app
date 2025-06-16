@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
-import 'package:social_media_app/presentation/themes/colors.dart';
 import 'package:social_media_app/presentation/widgets/input/outline_border.dart';
 
 class Input extends StatefulWidget {
@@ -99,7 +98,7 @@ class _InputState extends State<Input> {
       decoration: InputDecoration(
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(
-          vertical: 10.0,
+          vertical: 8.0,
           horizontal: 16.0,
         ),
         hoverColor: Colors.transparent,
@@ -115,7 +114,7 @@ class _InputState extends State<Input> {
             : Colors.grey.shade900,
         errorStyle: TextStyle(color: Colors.red.shade400),
         focusedErrorBorder: CustomOutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
           borderSide: BorderSide(
             color: Colors.red.shade400,
             width: 1.3,
@@ -123,7 +122,7 @@ class _InputState extends State<Input> {
           ),
         ),
         errorBorder: CustomOutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
           borderSide: BorderSide(
             color: Colors.red.shade400,
             width: 1.3,
@@ -152,7 +151,7 @@ class _InputState extends State<Input> {
               )
             : null,
         enabledBorder: CustomOutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
           borderSide: widget.outlined == true
               ? BorderSide(
                   color: Theme.of(
@@ -163,10 +162,10 @@ class _InputState extends State<Input> {
                 )
               : BorderSide.none,
         ),
-        focusedBorder: const CustomOutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+        focusedBorder: CustomOutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
           borderSide: BorderSide(
-            color: AppColors.primaryColor,
+            color: Theme.of(context).colorScheme.primary,
             width: 1.3,
             style: BorderStyle.solid,
           ),

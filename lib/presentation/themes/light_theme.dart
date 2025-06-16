@@ -5,9 +5,9 @@ import 'package:social_media_app/presentation/themes/colors.dart';
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   fontFamily: 'Poppins',
-  colorScheme: const ColorScheme.light(
+  colorScheme: ColorScheme.light(
     surface: Color.fromARGB(255, 246, 246, 246),
-    primary: AppColors.primaryColor,
+    primary: AppColors.lightPrimaryColor,
   ),
   appBarTheme: AppBarTheme(
     systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -40,9 +40,8 @@ ThemeData lightTheme = ThemeData(
     ),
     titleLarge: TextStyle(
       color: Colors.grey.shade900,
-      fontFamily: 'Poppins',
-      fontWeight: FontWeight.w700,
-      fontSize: 24,
+      fontWeight: FontWeight.w600,
+      fontSize: 36,
     ),
     headlineMedium: TextStyle(
       color: Colors.grey.shade900,
@@ -62,9 +61,12 @@ ThemeData lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-      backgroundColor: AppColors.primaryColor,
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      backgroundColor: AppColors.lightPrimaryColor,
       foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusGeometry.circular(12.0),
+      ),
     ),
   ),
 );

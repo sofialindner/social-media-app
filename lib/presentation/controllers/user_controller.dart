@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/data/models/user_model.dart';
+import 'package:social_media_app/presentation/utils/shared_preferences_helper.dart';
 
 String get apiUrl => dotenv.env['API_URL']!;
 final path = '$apiUrl/user';
@@ -62,18 +63,22 @@ Future<http.Response> deleteUserRequest(int id) async {
   return await http.delete(Uri.parse('$path/$id'));
 }
 
-Future<http.Response> followUserRequest(int id, int targetId) async {
-  return await http.post(Uri.parse('$path/$id/follow/$targetId'));
+Future<http.Response> followUserRequest(int targetId) async {
+  final userId = (await SharedPreferencesHelper.getUserData())?.id;
+  return await http.post(Uri.parse('$path/$userId/follow/$targetId'));
 }
 
-Future<http.Response> unfollowUserRequest(int id, int targetId) async {
-  return await http.post(Uri.parse('$path/$id/unfollow/$targetId'));
+Future<http.Response> unfollowUserRequest(int targetId) async {
+  final userId = (await SharedPreferencesHelper.getUserData())?.id;
+  return await http.post(Uri.parse('$path/$userId/unfollow/$targetId'));
 }
 
-Future<http.Response> likePostRequest(int id, int postId) async {
-  return await http.post(Uri.parse('$path/$id/like/$postId'));
+Future<http.Response> likePostRequest(int postId) async {
+  final userId = (await SharedPreferencesHelper.getUserData())?.id;
+  return await http.post(Uri.parse('$path/$userId/like/$postId'));
 }
 
-Future<http.Response> dislikePostRequest(int id, int postId) async {
-  return await http.post(Uri.parse('$path/$id/dislike/$postId'));
+Future<http.Response> dislikePostRequest(int postId) async {
+  final userId = (await SharedPreferencesHelper.getUserData())?.id;
+  return await http.post(Uri.parse('$path/$userId/dislike/$postId'));
 }

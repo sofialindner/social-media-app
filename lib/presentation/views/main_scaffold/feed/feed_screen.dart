@@ -1,10 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:social_media_app/data/models/post_model.dart';
 import 'package:social_media_app/presentation/controllers/post_controller.dart';
-import 'package:social_media_app/presentation/providers/user_provider.dart';
-import 'package:social_media_app/presentation/views/feed/post_container.dart';
-import 'package:social_media_app/presentation/widgets/profile_image.dart';
+import 'package:social_media_app/presentation/views/main_scaffold/feed/post_container.dart';
+import 'package:social_media_app/presentation/widgets/custom_app_bar.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -42,25 +41,19 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-
     return Scaffold(
-      appBar: AppBar(
-        title: Image.network(
-          fit: BoxFit.cover,
-          width: 80,
-          'https://vertigo.com.br/wp-content/uploads/2023/08/neo4j-1024x512.png',
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Container(height: 1.0, color: Colors.white10),
-        ),
-        actionsPadding: EdgeInsets.symmetric(horizontal: 12.0),
+      appBar: CustomAppBar(
         actions: [
-          InkWell(
-            borderRadius: BorderRadius.circular(32.0),
-            onTap: () => print(userProvider.user?.toJson()),
-            child: ProfileImage(),
+          // Botão de logout à direita da barra
+          IconButton(
+            onPressed: () {
+              Navigator.of(
+                context,
+                rootNavigator: true,
+              ).pushReplacementNamed('/login');
+            },
+            icon: const Icon(CupertinoIcons.square_arrow_right),
+            hoverColor: Colors.transparent,
           ),
         ],
       ),

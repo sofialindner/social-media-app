@@ -1,12 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:social_media_app/presentation/themes/colors.dart';
 
 class ProfileImage extends StatelessWidget {
   final Uint8List? image;
+  final double? size;
 
-  const ProfileImage({super.key, this.image});
+  const ProfileImage({super.key, this.image, this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -15,22 +17,25 @@ class ProfileImage extends StatelessWidget {
             borderRadius: BorderRadius.circular(32),
             child: Image.memory(
               image!,
-              height: 45,
-              width: 45,
+              height: size ?? 45,
+              width: size ?? 45,
               fit: BoxFit.cover,
             ),
           )
         : Container(
             alignment: Alignment.center,
-            height: 45,
-            width: 45,
+            height: size ?? 45,
+            width: size ?? 45,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.darkOverlay,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? AppColors.lightOverlay
+                  : AppColors.darkOverlay,
             ),
             child: Icon(
               CupertinoIcons.person_fill,
-              color: AppColors.primaryColor,
+              color: Theme.of(context).colorScheme.primary,
+              size: size != null ? (size! - 20) : null,
             ),
           );
   }
