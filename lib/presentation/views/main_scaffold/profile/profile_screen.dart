@@ -5,6 +5,7 @@ import 'package:social_media_app/data/models/user_model.dart';
 import 'package:social_media_app/presentation/controllers/post_controller.dart';
 import 'package:social_media_app/presentation/controllers/user_controller.dart';
 import 'package:social_media_app/presentation/providers/user_provider.dart';
+import 'package:social_media_app/presentation/views/main_scaffold/profile/user_posts_screen.dart';
 import 'package:social_media_app/presentation/widgets/profile_image.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -28,11 +29,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ? await unfollowUserRequest(widget.userId)
           : await followUserRequest(widget.userId);
 
+      // Atualiza perfil visitado
       await _loadUser();
+
+      // Atualiza perfil do usuário logado (nº de seguidores, etc.)
+      _notifyLoggedUserChanges();
       setState(() {});
     } catch (e) {
       print('Erro ao seguir usuário: $e');
     }
+  }
+
+  void _notifyLoggedUserChanges() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      userProvider.fetchUser();
+    });
   }
 
   Future<void> _loadUser() async {
@@ -54,7 +66,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _firstLoad() async {
     await _loadUser();
     await _loadUserPosts();
-
     setState(() => isLoading = false);
   }
 
@@ -82,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: _refresh,
-              child: posts.isEmpty
+              child: user == null
                   ? const Center(child: Text('Usuário não encontrado.'))
                   : Column(
                       children: [
@@ -217,22 +228,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ).textTheme.bodyMedium!.color!.withAlpha(40),
                         ),
                         Expanded(
-                          child: GridView.builder(
-                            controller: scrollController,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 8,
-                                  mainAxisSpacing: 8,
+                          child: posts.isEmpty
+                              ? Padding(
+                                  padding: EdgeInsetsGeometry.all(24.0),
+                                  child: Text('Nenhuma publicação.'),
+                                )
+                              : GridView.builder(
+                                  controller: scrollController,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 8,
+                                        mainAxisSpacing: 8,
+                                      ),
+                                  itemCount: posts.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                UserPostsScreen(
+                                                  userPosts: posts,
+                                                  initialIndex: index,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      child: Image.memory(
+                                        posts[index].images[0],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  },
                                 ),
-                            itemCount: posts.length,
-                            itemBuilder: (context, index) {
-                              return Image.memory(
-                                posts[index].images[0],
-                                fit: BoxFit.cover,
-                              );
-                            },
-                          ),
                         ),
                       ],
                     ),

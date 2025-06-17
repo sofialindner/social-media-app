@@ -5,11 +5,13 @@ import 'package:social_media_app/presentation/controllers/user_controller.dart';
 import 'package:social_media_app/presentation/views/main_scaffold/profile/profile_screen.dart';
 import 'package:social_media_app/presentation/widgets/page_indicator.dart';
 import 'package:social_media_app/presentation/widgets/profile_image.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostContainer extends StatefulWidget {
   final Post post;
+  final bool? redirectToProfile;
 
-  const PostContainer({super.key, required this.post});
+  const PostContainer({super.key, required this.post, this.redirectToProfile});
 
   @override
   State<PostContainer> createState() => _PostContainer();
@@ -32,6 +34,12 @@ class _PostContainer extends State<PostContainer> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    timeago.setLocaleMessages('pt_br', timeago.PtBrMessages());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -39,6 +47,17 @@ class _PostContainer extends State<PostContainer> {
       children: [
         InkWell(
           overlayColor: WidgetStatePropertyAll(Colors.transparent),
+          onTap: Navigator.canPop(context)
+              ? null
+              : () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ProfileScreen(userId: widget.post.userId),
+                    ),
+                  );
+                },
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 12.0,
@@ -47,7 +66,7 @@ class _PostContainer extends State<PostContainer> {
             child: Row(
               spacing: 12.0,
               children: [
-                ProfileImage(),
+                ProfileImage(image: widget.post.userImage),
                 Text(
                   widget.post.userName ?? 'Usuário',
                   style: TextStyle(fontWeight: FontWeight.w500),
@@ -55,14 +74,6 @@ class _PostContainer extends State<PostContainer> {
               ],
             ),
           ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProfileScreen(userId: widget.post.userId),
-              ),
-            );
-          },
         ),
         InkWell(
           overlayColor: WidgetStatePropertyAll(Colors.transparent),
@@ -99,7 +110,27 @@ class _PostContainer extends State<PostContainer> {
                   ),
                 ],
               ),
-              Text(widget.post.description!),
+
+              // Nome de usuário e descrição do post
+              Text.rich(
+                overflow: TextOverflow.ellipsis,
+                TextSpan(
+                  text: '${widget.post.userName}   ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                      text: widget.post.description!,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
+
+              // Horário de postagem
+              Text(
+                timeago.format(widget.post.createdAt, locale: 'pt_br'),
+                style: TextStyle(color: Colors.grey),
+              ),
             ],
           ),
         ),

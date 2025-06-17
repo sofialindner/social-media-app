@@ -5,16 +5,20 @@ class Post {
   final int? id;
   final int userId;
   final String? userName;
+  final Uint8List? userImage;
   final String? description;
   final List<Uint8List> images;
+  final DateTime createdAt;
   bool? liked;
 
   Post({
     this.id,
     required this.userId,
     this.userName,
+    this.userImage,
     this.description,
     required this.images,
+    required this.createdAt,
     this.liked = false,
   });
 
@@ -33,7 +37,11 @@ class Post {
       id: json['id'],
       userId: json['user_id'] ?? 1,
       userName: json['username'],
+      userImage: json['user_image'] != null
+          ? base64Decode(json['user_image'])
+          : null,
       description: json['description'],
+      createdAt: DateTime.parse(json['created_at']),
       images: decodedImages ?? [],
     );
   }

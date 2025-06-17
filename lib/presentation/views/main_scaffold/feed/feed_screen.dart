@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/data/models/post_model.dart';
 import 'package:social_media_app/presentation/controllers/post_controller.dart';
-import 'package:social_media_app/presentation/views/main_scaffold/feed/post_container.dart';
+import 'package:social_media_app/presentation/views/main_scaffold/feed/post_list.dart';
 import 'package:social_media_app/presentation/widgets/custom_app_bar.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -58,18 +58,15 @@ class _FeedScreenState extends State<FeedScreen> {
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 24.0),
-                        child: PostContainer(post: posts[index]),
-                      );
-                    },
-                  ),
+                : PostList(posts: posts),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

@@ -14,7 +14,7 @@ class ProfileImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return image != null
         ? ClipRRect(
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(60),
             child: Image.memory(
               image!,
               height: size ?? 45,
