@@ -19,8 +19,9 @@ Future<List<User>> getAllUsersRequest() async {
   return _extractUsersFromResponse(response.body);
 }
 
-Future<User> getUserByIdRequest(int id) async {
-  final response = await http.get(Uri.parse('$path/$id'));
+Future<User> getUserProfileRequest(int id) async {
+  final userId = (await SharedPreferencesHelper.getUserData())?.id;
+  final response = await http.get(Uri.parse('$path/$userId/profile/$id'));
   return User.fromJson(jsonDecode(response.body));
 }
 

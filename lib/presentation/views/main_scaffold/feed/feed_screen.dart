@@ -17,9 +17,7 @@ class _FeedScreenState extends State<FeedScreen> {
   bool _isLoading = false;
 
   _loadPosts() async {
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     try {
       posts = await getAllPostsRequest();
@@ -27,9 +25,7 @@ class _FeedScreenState extends State<FeedScreen> {
     } catch (e) {
       print('erro: $e');
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
   }
 

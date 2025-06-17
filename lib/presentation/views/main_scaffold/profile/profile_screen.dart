@@ -18,17 +18,18 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final ScrollController scrollController = ScrollController();
-
   User? user;
   List<Post> posts = List.empty();
-
   bool isLoading = true;
-  bool follows = false;
 
   Future<void> _followUser() async {
     try {
-      await followUserRequest(widget.userId);
-      setState(() => follows = true);
+      user!.follows!
+          ? await unfollowUserRequest(widget.userId)
+          : await followUserRequest(widget.userId);
+
+      await _loadUser();
+      setState(() {});
     } catch (e) {
       print('Erro ao seguir usuário: $e');
     }
@@ -36,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadUser() async {
     try {
-      user = await getUserByIdRequest(widget.userId);
+      user = await getUserProfileRequest(widget.userId);
     } catch (e) {
       print('Erro ao carregar usuário: $e');
     }
@@ -93,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: Row(
                             children: [
-                              ProfileImage(size: 80),
+                              ProfileImage(image: user?.image, size: 80),
                               const SizedBox(width: 12.0),
 
                               // Credenciais: nome e e-mail
@@ -112,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                         const SizedBox(width: 12.0),
                                         Text(
-                                          user!.email,
+                                          user!.email!,
                                           style: TextStyle(
                                             color: Theme.of(context)
                                                 .textTheme
@@ -137,8 +138,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             '${posts.length}',
                                             'Publicações',
                                           ),
-                                          _buildCounter('2.901', 'Seguidores'),
-                                          _buildCounter('947', 'Seguindo'),
+                                          _buildCounter(
+                                            '${user?.followersCount ?? 0}',
+                                            'Seguidores',
+                                          ),
+                                          _buildCounter(
+                                            '${user?.followingCount ?? 0}',
+                                            'Seguindo',
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -162,7 +169,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: ElevatedButton(
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStatePropertyAll(
-                                          follows ? Colors.transparent : null,
+                                          user!.follows!
+                                              ? Colors.transparent
+                                              : null,
                                         ),
                                         shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
@@ -180,9 +189,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       onPressed: () => _followUser(),
                                       child: Text(
-                                        follows ? 'Seguindo' : 'Seguir',
+                                        user!.follows! ? 'Seguindo' : 'Seguir',
                                         style: TextStyle(
-                                          color: follows
+                                          color: user!.follows!
                                               ? Theme.of(
                                                   context,
                                                 ).colorScheme.primary
